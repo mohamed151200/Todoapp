@@ -13,7 +13,7 @@ class DbHelper {
 
   Future<Database> get db async {
     if (_db != null) return _db!;
-    print("--- Initializing Database ---");
+    //print("--- Initializing Database ---");
     _db = await _initDb();
     return _db!;
   }
@@ -25,7 +25,7 @@ class DbHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
-        print("--- Creating Tables ---");
+       // print("--- Creating Tables ---");
         await db.execute('''
   CREATE TABLE tasks (
     id TEXT PRIMARY KEY,  
@@ -52,7 +52,7 @@ class DbHelper {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
-      print('_____________________${e}');
+     // print('_____________________${e}');
     }
   }
 
@@ -73,7 +73,7 @@ class DbHelper {
           ? maps.map((task) => TaskModel.fromJson(task)).toList()
           : [];
     } catch (e) {
-      print('_____________________${e}');
+     // print('_____________________${e}');
       return [];
     }
   }
@@ -89,7 +89,7 @@ Future<void> updateTask(TaskModel task) async {
         whereArgs: [task.id],
       );
     } catch (e) {
-      print('___________________${e}');
+    //  print('___________________${e}');
       0;
     }
     0;
@@ -102,7 +102,7 @@ Future<void> updateTask(TaskModel task) async {
       await dbClient.delete('tasks', where: 'id = ?', whereArgs: [id]);
     } catch (e) {
       0;
-      print('______________________${e}');
+     // print('______________________${e}');
     }
   }
 
@@ -117,7 +117,7 @@ Future<List<TaskModel>> getSoftDeletedTasks() async {
 
     return maps.map((task) => TaskModel.fromJson(task)).toList();
   } catch (e) {
-    print('Error fetching deleted tasks: $e');
+   // print('Error fetching deleted tasks: $e');
     return [];
   }
 }}

@@ -99,6 +99,23 @@ class Signwithgoogle extends StatelessWidget {
                   ),
 
                   const Spacer(flex: 2),
+                  Row(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Remember Me".tr,
+                      style: GoogleFonts.lato(color: Colors.white70, fontSize: 11),
+                    ),
+                      Obx(()=>
+                        Checkbox(
+                          hoverColor: Colors.blue,
+                          value: ctr.remember.value,
+                          onChanged: (value) {
+                            ctr.toggleRemember();
+                            ctr.save();
+                          },
+                        ),
+                      ),]),
 
                   // ── Sign In Button ──
                   Obx(() => GestureDetector(
@@ -106,7 +123,7 @@ class Signwithgoogle extends StatelessWidget {
                       isLoading.value = true;
                       try {
                         await ctr.signInWithGoogle();
-                        tctr.fullSync();
+                       await tctr.fullSync();
                         Get.offAll(() => HomeView());
                       } finally {
                         isLoading.value = false;

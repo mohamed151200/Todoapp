@@ -18,10 +18,10 @@ class TaskController extends GetxController {
   int get lastSync => _box.read('lastSync') ?? 0;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     _dbHelper.db;
     super.onInit();
-    fullSync(); // بننادي ميثود التحميل هنا
+    await fullSync(); // بننادي ميثود التحميل هنا
   }
 
   // 1. ميثود جلب البيانات من الداتابيز
@@ -29,9 +29,9 @@ class TaskController extends GetxController {
     try {
       var tasks = await _dbHelper.getAllTasks();
       allTasks.assignAll(tasks);
-      print(tasks);
+     // print(tasks);
     } catch (e) {
-      print('____________________________${e}');
+    //  print('____________________________${e}');
     }
 
     // assignAll أحسن من value= لأنها بتعمل refresh أوتوماتيك
@@ -41,7 +41,7 @@ class TaskController extends GetxController {
   void addTask(String title, String date, ) async {
     var uuid = const Uuid();
     final user = FirebaseAuth.instance.currentUser;
-    print('________________________${user!.uid}');
+    //print('________________________${user!.uid}');
     String uniqueId = uuid.v4();
     TaskModel newTask = TaskModel(
       userId: user!.uid,
@@ -132,9 +132,9 @@ class TaskController extends GetxController {
         await _box.write('lastSync', syncStartTime);
         await fetchTasks();
 
-        print("Sync Finished: All clean and uploaded.");
+        //print("Sync Finished: All clean and uploaded.");
       } catch (e) {
-        print("Sync Error: $e");
+        //print("Sync Error: $e");
       }
     }
   }

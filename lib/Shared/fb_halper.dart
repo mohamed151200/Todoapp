@@ -39,6 +39,7 @@ class FirebaseHelper {
 
   Future<List<TaskModel>> fetchNewFromCloud(int lastSync) async {
     final uid = currentUid;
+    
 
     if (uid == null) return [];
 
@@ -48,7 +49,7 @@ class FirebaseHelper {
           .collection('users')
           .doc(uid)
           .collection('tasks')
-          .where('timestamp', isGreaterThan: lastSync)
+          .where('timestamp', isLessThan: lastSync)
           .get();
 
       // 2. التحويل من QueryDocumentSnapshot إلى TaskModel
@@ -56,10 +57,10 @@ class FirebaseHelper {
         // بنحول الـ Map اللي جاية من فايربيز لـ Object باستخدام الـ Factory اللي في الموديل
         return TaskModel.fromJson(doc.data() as Map<String, dynamic>);
       }).toList();
-
+       //print('___________________${newTasks}');
       return newTasks;
     } catch (e) {
-      print("Error in fetchNewFromCloud: $e");
+     // print("Error in fetchNewFromCloud: $e");
       return [];
     }
   }
