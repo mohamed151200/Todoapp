@@ -14,7 +14,7 @@ A high-performance Task Management application built with **Flutter**, featuring
 ### 2️⃣ Offline-First & Cloud Propagation
 *Split-screen demo: Adding a task in **Offline Mode** (Saved to Sqflite), then enabling internet to see the data automatically propagate to **Firebase Firestore**.*
 
-<img src="ss/addingoffline-ezgif.com-video-to-gif-converter.gif" width="350" alt="Offline Sync Demo">
+<img src="ss/addingoffline-ezgif.com-video-to-gif-converter.gif" alt="Offline Sync Demo">
 
 
 ---
