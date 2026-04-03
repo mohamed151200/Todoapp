@@ -54,4 +54,4 @@ The app follows a strict **Logic Flow**:
 ---
 
 ## 👨‍💻 Developed By
-**Mohamed Khaled** *Systems & Computer Engineer* [LinkedIn](https://www.linkedin.com/in/mohamed-khaled-ba3521241/) | [GitHub](https://github.com/mohamed151200)
+**Mohamed Khaled** *Systems & Computer Engineer* [LinkedIn](https://www.linkedin.com/in/mohamed-khaled-saleh-328438344/) | [GitHub]([https://github.com/mohamed151200](https://github.com/mohamed151200))
