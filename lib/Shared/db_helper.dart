@@ -56,11 +56,9 @@ class DbHelper {
     }
   }
 
-  // 4. Read (Get): قراءة كل المهام
   Future<List<TaskModel>> getAllTasks() async {
     final uid=FirebaseHelper.currentUid;
     Database dbClient = await db;
-    // بنجيب الداتا مرتبة حسب الـ Timestamp (الأحدث فوق)
     try {
       List<Map<String, dynamic>> maps = await dbClient.query(
         'tasks',
@@ -78,7 +76,6 @@ class DbHelper {
     }
   }
 
-  // 5. Update: تعديل مهمة (أو تغيير الحالة لـ Done)
 Future<void> updateTask(TaskModel task) async {
     Database dbClient = await db;
     try {

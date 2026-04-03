@@ -1,11 +1,11 @@
 class TaskModel {
-  String id;             // للموبايل (Sqflite Auto-increment)
-  String userId;  // للمزامنة (Firebase Document ID)
+  String id;            
+  String userId;  
   String title;
-  String date;         // تاريخ المهمة (مثلاً: 2026-03-22)
-  int timestamp;       // وقت الإنشاء/التعديل (بالميللي ثانية) للمزامنة
+  String date;         
+  int timestamp;       
   int status; 
-  int isDeleted;         // 0: لم تبدأ، 1: اكتملت
+  int isDeleted;         
 
   TaskModel({
     required this.id,
@@ -17,7 +17,6 @@ class TaskModel {
     this.isDeleted=0
   });
 
-  // من JSON (سواء من السيكولايت أو الفايربيز) لـ Object
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
         id: json['id'],
         userId: json['userId']??'',
@@ -29,7 +28,6 @@ class TaskModel {
 
       );
 
-  // من Object لـ Map (عشان التخزين)
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,

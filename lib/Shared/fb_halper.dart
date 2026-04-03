@@ -49,7 +49,7 @@ class FirebaseHelper {
           .collection('users')
           .doc(uid)
           .collection('tasks')
-          .where('timestamp', isLessThan: lastSync)
+          .where('timestamp', isGreaterThan: lastSync)
           .get();
 
       // 2. التحويل من QueryDocumentSnapshot إلى TaskModel

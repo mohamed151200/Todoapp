@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart'; // Import واحد يشمل كل حاجة في GetX
+import 'package:get/get.dart';
 import 'package:todo_app/Shared/db_helper.dart';
 import 'package:todo_app/Shared/fb_halper.dart';
 import 'package:todo_app/modules/todo/task_model.dart';
@@ -11,20 +11,20 @@ class TaskController extends GetxController {
   var allTasks = <TaskModel>[].obs;
   final DbHelper _dbHelper = DbHelper();
   final FirebaseHelper _fbHelper = FirebaseHelper.instance;
+  final uid=FirebaseHelper.currentUid;
   ConnectivityController connectivityController = Get.put(
     ConnectivityController(),
   );
   final _box = GetStorage();
-  int get lastSync => _box.read('lastSync') ?? 0;
+  int get lastSync => _box.read('lastSync_$uid') ?? 0;
 
   @override
   Future<void> onInit() async {
     _dbHelper.db;
     super.onInit();
-    await fullSync(); // بننادي ميثود التحميل هنا
+    await fullSync(); 
   }
 
-  // 1. ميثود جلب البيانات من الداتابيز
   Future<void> fetchTasks() async {
     try {
       var tasks = await _dbHelper.getAllTasks();
@@ -34,10 +34,8 @@ class TaskController extends GetxController {
     //  print('____________________________${e}');
     }
 
-    // assignAll أحسن من value= لأنها بتعمل refresh أوتوماتيك
   }
 
-  // 2. ميثود إضافة تاسك جديدة
   void addTask(String title, String date, ) async {
     var uuid = const Uuid();
     final user = FirebaseAuth.instance.currentUser;
@@ -57,10 +55,9 @@ class TaskController extends GetxController {
       _fbHelper.addToCloud(newTask);
     }
     allTasks.add(newTask);
-    allTasks.refresh(); // بنضيفها لليستة عشان تظهر في الـ UI فوراً
+    allTasks.refresh();
   }
 
-  // 3. ميثود الـ Toggle (كودك الممتاز مع تبسيط صغير)
   void toggleTaskStatus(TaskModel task) async {
     task.status = (task.status == 0) ? 1 : 0;
     allTasks.refresh();
@@ -71,7 +68,6 @@ class TaskController extends GetxController {
     }
   }
 
-  // 4. ميثود المسح
   void deleteTask(TaskModel task) async {
     final last_Sync = lastSync;
     try {
@@ -91,18 +87,19 @@ class TaskController extends GetxController {
     }
 
     allTasks.remove(task);
-    allTasks.refresh(); // بتمسحها من الرام بناءً على الـ Reference
+    allTasks.refresh();
   }
 
   Future<void> fullSync() async {
-    await fetchTasks(); // عرض أولي سريع
+    final uid=FirebaseHelper.currentUid;
+    await fetchTasks();
 
-    if (connectivityController.isConnected.value) {
+    if (connectivityController.isConnected.value && uid != null) {
       final int syncStartTime = DateTime.now().millisecondsSinceEpoch;
       final int lastSyncTime = lastSync;
 
       try {
-        // 1. سحب الجديد من السحاب (Pull)
+        
         List<TaskModel> cloudTasks = await _fbHelper.fetchNewFromCloud(
           lastSyncTime,
         );
@@ -110,16 +107,16 @@ class TaskController extends GetxController {
           await _dbHelper.insertTask(task);
         }
 
-        // 2. تنظيف الممسوحات (Delete Cleanup) - الأولوية للمسح
+        
         List<TaskModel> deletedTasks = await _dbHelper.getSoftDeletedTasks();
         for (var task in deletedTasks) {
           await _fbHelper.deleteFromCloud(task.id);
           await _dbHelper.deleteTask(
             task.id,
-          ); // Hard Delete محلي بعد نجاح المسح سحابياً
+          ); 
         }
 
-        // 3. رفع الجديد والمعدل (Push) - فقط اللي مش ممسوح
+        
         List<TaskModel> localToUpload = allTasks
             .where((t) => t.timestamp > lastSyncTime && t.isDeleted == 0)
             .toList();
@@ -128,8 +125,9 @@ class TaskController extends GetxController {
           await _fbHelper.addToCloud(task);
         }
 
-        // 4. تحديث الوقت النهائي والرام
-        await _box.write('lastSync', syncStartTime);
+       
+       await _box.write('lastSync_$uid', syncStartTime);
+
         await fetchTasks();
 
         //print("Sync Finished: All clean and uploaded.");
