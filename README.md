@@ -7,14 +7,15 @@ A high-performance Task Management application built with **Flutter**, featuring
 ## 🚀 Technical Showcases (Live Demos)
 
 ### 1️⃣ Zero-to-Data (Cold Start & Sync)
-*Demonstrating a 28-second flow: Installation, Authentication, and instant data restoration from the cloud via `onInit` synchronization.*
+*once you install on another device you find your tasks immediately.*
 
-![Cold Start Sync](ss/installedwitholddata-ezgif.com-video-to-gif-converter.gif)
+<img src="ss/installedwitholddata-ezgif.com-video-to-gif-converter.gif" width="350" alt="Cold Start Sync">
 
 ### 2️⃣ Offline-First & Cloud Propagation
 *Split-screen demo: Adding a task in **Offline Mode** (Saved to Sqflite), then enabling internet to see the data automatically propagate to **Firebase Firestore**.*
 
-![Offline Sync Demo](ss/addingoffline-ezgif.com-video-to-gif-converter.gif)
+<img src="ss/addingoffline-ezgif.com-video-to-gif-converter.gif" width="350" alt="Offline Sync Demo">
+
 
 ---
 
